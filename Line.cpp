@@ -21,25 +21,6 @@ void Line::draw(sf::RenderWindow &window, sf::Color color){
                         sf::Vertex(sf::Vector2f(ep[0], ep[1]), color) };
     window.draw(line, 2, sf::Lines);
 }
-void Line::drawAnimated(sf::RenderWindow &window, sf::Color color){
-    float n=DRAWSPEED;
-    float length=sqrt(pow((sp[0]-ep[0]), 2) + pow((sp[1]-ep[1]), 2));
-    float ratio=n/length;
-    while(ratio<1){
-        float tEndx=(1-ratio)*sp[0]+ratio*ep[0];
-        float tEndy=(1-ratio)*sp[1]+ratio*ep[1];
-        sf::Vertex line[]={sf::Vertex(sf::Vector2f(sp[0], sp[1]), color),
-                            sf::Vertex(sf::Vector2f(tEndx, tEndy), color)};
-        n+=DRAWSPEED;
-        ratio=n/length;
-        window.clear();
-        window.draw(line, 2, sf::Lines);
-        window.display();
-
-    }
-    draw(window, sf::Color::Blue);
-
-}
 void Line::drawPart(sf::RenderWindow &window, float amount, sf::Color color){
     float ratio=amount/length;
     if(ratio<1){
@@ -114,4 +95,29 @@ std::vector<Line*> sierpinskiLine::generate(bool opposite){
     return newLines;
 }
 
+/************** DRAGON ******************************************/
+dragonLine::dragonLine(float sx, float sy, float ex, float ey): Line(sx, sy, ex, ey){
 
+}
+dragonLine::~dragonLine(){
+
+}
+std::vector<Line*> dragonLine::generate(bool opposite){
+    std::vector<Line*> newLines;
+    float b[2]; float temp[2];
+    float angle=(opposite)? -PI/4 : PI/4;
+    float ratio=sqrt(2)/2;
+
+    temp[0]=(1-ratio)*sp[0]+ratio*ep[0];
+    temp[1]=(1-ratio)*sp[1]+ratio*ep[1];
+
+    b[0]=(temp[0]-sp[0])*cos(angle)-(temp[1]-sp[1])*sin(angle)+sp[0];
+    b[1]=(temp[1]-sp[1])*cos(angle)+(temp[0]-sp[0])*sin(angle)+sp[1];
+
+
+    newLines.push_back(new dragonLine(sp[0], sp[1], b[0], b[1]));
+    newLines.push_back(new dragonLine(b[0], b[1], ep[0], ep[1]));
+
+    return newLines;
+
+}
