@@ -1,5 +1,5 @@
 # Curve fractals
-##Animation, how various fractal curves are builded
+## Animation, how various fractal curves are builded
 ### Koch snoflake <br />
 <img src="https://raw.githubusercontent.com/TP1997/Line-fractals/master/pictures/koch1.PNG" width="400" height="400">
 
